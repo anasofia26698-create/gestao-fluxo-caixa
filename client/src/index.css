@@ -55,3 +55,21 @@
 .simple-app .timeline-label span, .simple-app .timeline-value span { font-size:15px; }
 @media (max-width:900px) { .sim-layout, .sim-layout:not(.has-simulation) { grid-template-columns:1fr; } }
 
+/* Tipografia ampliada aplicada com CSS para manter o JSX estável. */
+.simple-header { font-size:18px; }
+.simple-header .brand strong { font-size:22px; }
+.simple-header .brand span { font-size:21px; }
+.page-heading-compact .eyebrow { font-size:14px; }
+.page-heading-compact h1 { font-size:44px; line-height:1.05; }
+.page-heading-compact .subheading { font-size:24px; line-height:1.35; }
+.simulator-large h2 { font-size:27px; }
+.simulator-large .card-heading p { font-size:19px; }
+.simulator-large .sim-badge { font-size:14px; }
+.simulation-panel h2 { font-size:29px; }
+.simulation-panel .card-heading p { font-size:20px; }
+.critical-below h2 { font-size:28px; }
+.critical-below .card-heading p { font-size:19px; }
+.timeline-card h2 { font-size:26px; }
+.timeline-card .card-heading p { font-size:20px; }
+@media (max-width:600px) { .page-heading-compact h1 { font-size:36px; } .page-heading-compact .subheading { font-size:18px; } .simulation-panel h2 { font-size:24px; } .critical-below h2, .timeline-card h2 { font-size:23px; } }
+

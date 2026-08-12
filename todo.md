@@ -62,4 +62,11 @@
 - [x] Exibir Débitos por dia para todas as datas importadas do Excel.
 - [x] Aumentar letras e números para a faixa de 15 a 20px.
 - [x] Validar responsividade, interação e compilação.
-- [ ] Salvar checkpoint da nova revisão.
+- [x] Salvar checkpoint da nova revisão.
+
+## Verificação de tipografia aplicada pelo editor visual
+
+- [x] Inspecionar estilos duplicados no Home.tsx e identificar a origem do erro JSX.
+- [x] Reaplicar a escala tipográfica por CSS, preservando os tamanhos visualmente desejados.
+- [x] Validar TypeScript, servidor e renderização responsiva.
+- [ ] Salvar checkpoint da tipografia revisada.
