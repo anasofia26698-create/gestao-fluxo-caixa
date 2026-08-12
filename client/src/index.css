@@ -73,3 +73,22 @@
 .timeline-card .card-heading p { font-size:20px; }
 @media (max-width:600px) { .page-heading-compact h1 { font-size:36px; } .page-heading-compact .subheading { font-size:18px; } .simulation-panel h2 { font-size:24px; } .critical-below h2, .timeline-card h2 { font-size:23px; } }
 
+/* Escala de leitura ampliada para o fluxo e a aba de importação. */
+.import-page .eyebrow { font-size:20px; }
+.import-page h1 { font-size:44px; }
+.import-page .subheading { font-size:24px; line-height:1.4; }
+.import-page .dropzone { font-size:22px; min-height:230px; }
+.import-page .dropzone strong { font-size:24px; }
+.import-page .dropzone span { font-size:20px; }
+.import-page .import-help h2 { font-size:28px; }
+.import-page .import-help p, .import-page .import-help .muted { font-size:20px; line-height:1.45; }
+.import-page .columns { gap:14px; }
+.import-page .columns span { font-size:20px; }
+.import-page .import-help .btn { font-size:20px; min-height:54px; }
+.import-page .import-summary strong { font-size:22px; }
+.import-page .import-summary span { font-size:20px; }
+.simple-app .simulator-large input { font-size:20px; min-height:54px; }
+.simple-app .simulator-large label { font-size:20px; }
+.simple-app .simulator-large .field-hint { font-size:16px; }
+@media (max-width:600px) { .import-page h1 { font-size:34px; } .import-page .subheading { font-size:18px; } .import-page .dropzone strong, .import-page .import-help h2 { font-size:22px; } .import-page .dropzone span, .import-page .import-help p, .import-page .import-help .muted, .import-page .columns span { font-size:17px; } .import-page .import-summary span { font-size:16px; } }
+

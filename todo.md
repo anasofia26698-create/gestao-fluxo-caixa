@@ -69,4 +69,12 @@
 - [x] Inspecionar estilos duplicados no Home.tsx e identificar a origem do erro JSX.
 - [x] Reaplicar a escala tipográfica por CSS, preservando os tamanhos visualmente desejados.
 - [x] Validar TypeScript, servidor e renderização responsiva.
-- [ ] Salvar checkpoint da tipografia revisada.
+- [x] Salvar checkpoint da tipografia revisada.
+
+## Nova revisão: moeda brasileira e fontes ampliadas
+
+- [x] Aceitar entrada do valor total no simulador em formato brasileiro, como 40.000,00.
+- [x] Exibir e revisar a aba Importar Planilha com fontes ampliadas.
+- [x] Ampliar as fontes das informações em 5x de forma responsiva e legível.
+- [x] Validar parsing monetário, importação, TypeScript e renderização.
+- [ ] Salvar checkpoint da nova revisão.
