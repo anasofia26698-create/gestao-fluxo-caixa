@@ -52,4 +52,14 @@
 - [x] Inspecionar o erro de recarga do Home.tsx e localizar propriedades JSX duplicadas.
 - [x] Remover estilos inline duplicados sem perder a intenção de aumentar a legibilidade.
 - [x] Validar TypeScript, build e renderização da página.
-- [ ] Salvar checkpoint corrigido.
+- [x] Salvar checkpoint corrigido.
+
+## Nova revisão: simulação lateral e fluxo enxuto
+
+- [x] Mostrar a simulação à direita do simulador somente após clicar em Simular compra.
+- [x] Mover Datas críticas para baixo do simulador e da simulação.
+- [x] Remover Data de hoje, Total a pagar dia e Dias com limite ultrapassado da tela de fluxo.
+- [x] Exibir Débitos por dia para todas as datas importadas do Excel.
+- [x] Aumentar letras e números para a faixa de 15 a 20px.
+- [x] Validar responsividade, interação e compilação.
+- [ ] Salvar checkpoint da nova revisão.
