@@ -123,3 +123,16 @@
 - [x] Manter o fluxo atual de prazos 30, 60 e 90 dias.
 - [x] Validar os dois modos, responsividade e compilação.
 - [x] Salvar checkpoint do simulador ampliado.
+
+## Abas de Metas Compras
+
+- [x] Adicionar as abas superiores "Cadastro de Metas" e "Dashboard de Compras" ao lado de Importar Planilha.
+- [x] Proteger ambas as abas com senha e não exibir dados antes da autenticação.
+- [x] Criar cadastro consolidado de metas para os seis setores e período mensal.
+- [x] Persistir metas no navegador e permitir edição.
+- [x] Criar importação/registro de compras com Data, Setor, Fornecedor, Valor e Nº da Nota.
+- [x] Persistir compras e permitir exclusão de registros.
+- [x] Calcular dotação, comprado, saldo e consumo por setor e no total.
+- [x] Exibir cards, tabela consolidada, barras de progresso e alertas de consumo.
+- [x] Validar senha, cálculos, responsividade, compilação e testes.
+- [x] Salvar checkpoint das abas de Metas Compras.
