@@ -84,4 +84,14 @@
 - [x] Remover valores de demonstração das datas do fluxo.
 - [x] Resetar os lançamentos armazenados localmente sem alterar a lógica de importação.
 - [x] Validar que o fluxo inicia vazio e aceita uma nova planilha.
-- [ ] Salvar checkpoint da base limpa.
+- [x] Salvar checkpoint da base limpa.
+
+## Migração full-stack e armazenamento de arquivos
+
+- [x] Resolver o conflito do upgrade preservando o Home.tsx funcional do fluxo de caixa.
+- [x] Sincronizar o schema e a base full-stack com migração segura.
+- [x] Criar metadados de arquivos e procedimentos protegidos de upload/listagem.
+- [x] Integrar a aba de importação com armazenamento persistente de planilhas.
+- [x] Escrever e executar testes Vitest para o fluxo de arquivos, incluindo rejeição, upload bem-sucedido e listagem por usuário.
+- [x] Validar build de produção, autenticação protegida, upload e renderização.
+- [ ] Salvar checkpoint da versão full-stack.
