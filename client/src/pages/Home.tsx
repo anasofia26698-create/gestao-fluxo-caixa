@@ -6,15 +6,15 @@ import { AlertTriangle, CalendarDays, CheckCircle2, Download, FileSpreadsheet, I
 
 type Entry = { id: string; date: string; debit: number; source: "imported" | "manual"; createdAt?: number };
 type Grouped = { date: string; debit: number; limit: number; exceeded: boolean; critical?: string };
-const STORAGE = "fluxo-caixa-debitos-v3";
+const STORAGE = "fluxo-caixa-debitos-v4";
+const RESET_MARKER = "fluxo-caixa-base-limpa-v1";
 const DAY = 86400000;
 const money = (v: number) => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 const dateBR = (v: string) => new Date(`${v}T12:00:00`).toLocaleDateString("pt-BR");
 const iso = (d: Date) => d.toISOString().slice(0, 10);
 const limitForDate = (date: string) => [5, 10, 15, 20, 25].includes(new Date(`${date}T12:00:00`).getDate()) ? 50000 : 75000;
 const criticalLabel = (date: string) => ({ 5: "Folha de pagamento", 10: "Custos altos", 15: "Impostos", 20: "Adiantamento + impostos", 25: "Impostos" } as Record<number, string>)[new Date(`${date}T12:00:00`).getDate()];
-const seed: Entry[] = [5, 10, 15, 20, 25].map((day, i) => { const d = new Date(); d.setDate(day); return { id: `seed-${i}`, date: iso(d), debit: [52000, 43800, 61000, 48200, 54000][i], source: "imported" }; });
-function loadEntries(): Entry[] { try { const saved = JSON.parse(localStorage.getItem(STORAGE) || "null"); return Array.isArray(saved) ? saved.map((e: any) => ({ ...e, source: e.source || "imported" })) : seed; } catch { return seed; } }
+function loadEntries(): Entry[] { try { if (!localStorage.getItem(RESET_MARKER)) { localStorage.removeItem("fluxo-caixa-debitos-v3"); localStorage.removeItem("fluxo-caixa-debitos-v4"); localStorage.setItem(RESET_MARKER, "1"); } const saved = JSON.parse(localStorage.getItem(STORAGE) || "null"); return Array.isArray(saved) ? saved.map((e: any) => ({ ...e, source: e.source || "imported" })) : []; } catch { return []; } }
 const parseTerms = (value: string) => value.split(/[\s,;]+/).map((v) => Number(v)).filter((v) => Number.isFinite(v) && v > 0).slice(0, 12);
 const parseBRL = (value: string) => { const normalized = value.replace(/\s/g, "").replace(/R\$?/gi, "").replace(/\./g, "").replace(",", "."); const parsed = Number(normalized); return Number.isFinite(parsed) ? parsed : 0; };
 

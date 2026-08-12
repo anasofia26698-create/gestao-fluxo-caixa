@@ -77,4 +77,11 @@
 - [x] Exibir e revisar a aba Importar Planilha com fontes ampliadas.
 - [x] Ampliar as fontes das informações em 5x de forma responsiva e legível.
 - [x] Validar parsing monetário, importação, TypeScript e renderização.
-- [ ] Salvar checkpoint da nova revisão.
+- [x] Salvar checkpoint da nova revisão.
+
+## Limpeza da base para nova importação
+
+- [x] Remover valores de demonstração das datas do fluxo.
+- [x] Resetar os lançamentos armazenados localmente sem alterar a lógica de importação.
+- [x] Validar que o fluxo inicia vazio e aceita uma nova planilha.
+- [ ] Salvar checkpoint da base limpa.
