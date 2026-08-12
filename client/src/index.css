@@ -92,3 +92,14 @@
 .simple-app .simulator-large .field-hint { font-size:16px; }
 @media (max-width:600px) { .import-page h1 { font-size:34px; } .import-page .subheading { font-size:18px; } .import-page .dropzone strong, .import-page .import-help h2 { font-size:22px; } .import-page .dropzone span, .import-page .import-help p, .import-page .import-help .muted, .import-page .columns span { font-size:17px; } .import-page .import-summary span { font-size:16px; } }
 
+
+/* Confirmação temporária de compras */
+.confirm-purchase-btn { margin: 0 20px 20px; width: calc(100% - 40px); font-size: 20px; min-height: 48px; }
+.confirmation-modal { width: min(100%, 560px); }
+.confirmation-terms { display: grid; gap: 10px; padding: 0 20px 20px; }
+.confirmation-term { display: flex; grid-template-columns: auto 1fr; align-items: center; gap: 12px; padding: 13px 14px; border: 1px solid #dfe2e6; border-radius: 8px; background: #fafafa; cursor: pointer; }
+.confirmation-term input { width: 20px; height: 20px; accent-color: #176b43; }
+.confirmation-term span { display: grid; gap: 3px; }
+.confirmation-term strong { font-size: 20px; color: #17191c; }
+.confirmation-term small { font-size: 15px; color: #68727e; }
+@media (max-width: 600px) { .confirmation-term strong { font-size: 18px; } .confirmation-term small { font-size: 14px; } .modal-actions { flex-direction: column; } .modal-actions .btn { width: 100%; } }

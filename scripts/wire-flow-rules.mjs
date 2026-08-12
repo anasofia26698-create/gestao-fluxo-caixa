@@ -1,0 +1,10 @@
+import fs from "node:fs";
+const path = "client/src/pages/Home.tsx";
+let source = fs.readFileSync(path, "utf8");
+source = source.replace('import { trpc } from "@/lib/trpc";\n', 'import { trpc } from "@/lib/trpc";\nimport { isTemporaryEntryActive, replaceImportedEntries } from "@shared/flowRules";\n');
+source = source.replace('const activeEntries = useMemo(() => entries.filter((e) => e.source === "imported" || !e.createdAt || now - e.createdAt < 7 * DAY), [entries, now]);', 'const activeEntries = useMemo(() => entries.filter((entry) => isTemporaryEntryActive(entry, now)), [entries, now]);');
+const old = 'setEntries((all) => [...all.filter((e) => e.source === "manual" && e.createdAt && Date.now() - e.createdAt < 7 * DAY), ...imported]);';
+const replacement = 'setEntries((all) => replaceImportedEntries(all, imported, Date.now()));';
+if (!source.includes(old)) throw new Error("Import replacement not found");
+source = source.replace(old, replacement);
+fs.writeFileSync(path, source);

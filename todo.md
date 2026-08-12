@@ -17,7 +17,7 @@
 - [x] Atualizar o modelo de importação para usar Data de operação, Débito e Saldo.
 - [x] Manter o saldo diário como saldo anterior menos débito.
 - [x] Validar a simulação de compra e o indicador de risco usando somente débitos.
-- [ ] Salvar checkpoint e entregar a versão final sem créditos.
+- [x] Salvar checkpoint e entregar a versão final sem créditos.
 
 ## Nova especificação: fluxo simples com limites de compra
 
@@ -31,7 +31,7 @@
 - [x] Recriar o simulador com data de hoje, valor, prazo, data prevista, valor do dia, limite e decisão de compra.
 - [x] Exibir sempre a observação dos dias críticos de pagamento.
 - [x] Validar responsividade, localStorage e formatação brasileira.
-- [ ] Salvar checkpoint da nova versão e entregar ao usuário.
+- [x] Salvar checkpoint da nova versão e entregar ao usuário.
 
 ## Revisão: simulador ampliado e lançamentos temporários
 
@@ -94,4 +94,13 @@
 - [x] Integrar a aba de importação com armazenamento persistente de planilhas.
 - [x] Escrever e executar testes Vitest para o fluxo de arquivos, incluindo rejeição, upload bem-sucedido e listagem por usuário.
 - [x] Validar build de produção, autenticação protegida, upload e renderização.
-- [ ] Salvar checkpoint da versão full-stack.
+- [x] Salvar checkpoint da versão full-stack.
+
+## Atualização diária e confirmação temporária de compras
+
+- [x] Fazer a importação mais recente substituir todos os débitos importados anteriores, desconsiderando a base de hoje e datas antigas.
+- [x] Adicionar botão para confirmar compras nos prazos simulados.
+- [x] Reprocessar o fluxo com os valores confirmados nas datas previstas.
+- [x] Persistir confirmações temporárias e removê-las automaticamente após 7 dias.
+- [x] Validar nova importação, confirmação, expiração e responsividade.
+- [x] Salvar checkpoint da atualização diária.
