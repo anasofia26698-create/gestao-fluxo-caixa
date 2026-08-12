@@ -104,3 +104,12 @@
 - [x] Persistir confirmações temporárias e removê-las automaticamente após 7 dias.
 - [x] Validar nova importação, confirmação, expiração e responsividade.
 - [x] Salvar checkpoint da atualização diária.
+
+## Ajustes de datas críticas e débitos por dia
+
+- [x] Exibir dia e mês nas datas críticas no formato DD/MM.
+- [x] Remover o botão de exclusão da lista de débitos por dia.
+- [x] Validar layout, compilação e responsividade.
+- [x] Salvar checkpoint dos ajustes visuais.
+- [x] Validar em celular/tablet as datas críticas em DD/MM e os débitos sem botão de exclusão.
+- [x] Salvar novo checkpoint após a validação mobile.
