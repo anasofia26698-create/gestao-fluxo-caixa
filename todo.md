@@ -113,3 +113,13 @@
 - [x] Salvar checkpoint dos ajustes visuais.
 - [x] Validar em celular/tablet as datas críticas em DD/MM e os débitos sem botão de exclusão.
 - [x] Salvar novo checkpoint após a validação mobile.
+
+## Simulador por prazo ou data de pagamento
+
+- [x] Adicionar modalidade para escolher prazo em dias ou data prevista de pagamento.
+- [x] Aceitar múltiplas datas de pagamento, como 11/09/2026, 11/10/2026 e 11/11/2026.
+- [x] Dividir o valor total igualmente entre as datas informadas.
+- [x] Calcular prazo, valor existente, parcela, limite e decisão para datas manuais.
+- [x] Manter o fluxo atual de prazos 30, 60 e 90 dias.
+- [x] Validar os dois modos, responsividade e compilação.
+- [x] Salvar checkpoint do simulador ampliado.
