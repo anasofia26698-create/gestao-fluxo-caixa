@@ -65,3 +65,7 @@ Um símbolo geométrico sem texto formado por três barras ascendentes conectada
 
 ### Signature Brand Color
 **Signal Lime — #D6F65B**, usado com parcimônia em indicadores de ação, marcadores e estados ativos.
+
+## Revisão de direção — especificação do usuário
+
+A direção anterior foi substituída pela especificação minimalista do usuário. O produto agora deve usar fundo cinza claro, textos pretos, poucos botões, navegação com apenas duas abas e linguagem simples. A interface não deve exibir créditos, contas a receber ou saldo projetado. O objeto central é o total de débitos por dia, comparado a limites de compra de R$ 50.000 nos dias 05, 10, 15, 20 e 25 e R$ 75.000 nos demais. Alertas usam vermelho ou amarelo; decisão de compra usa verde/vermelho. A marca visual deve ser discreta, funcional e subordinada à leitura dos dados.

@@ -18,3 +18,17 @@
 - [x] Manter o saldo diário como saldo anterior menos débito.
 - [x] Validar a simulação de compra e o indicador de risco usando somente débitos.
 - [ ] Salvar checkpoint e entregar a versão final sem créditos.
+
+## Nova especificação: fluxo simples com limites de compra
+
+- [x] Redesenhar o site com fundo cinza claro, textos pretos e somente duas abas.
+- [x] Remover saldo projetado e qualquer seção de crédito/contas a receber.
+- [x] Implementar fluxo diário agrupado por data, com total de débitos por dia e total geral.
+- [x] Implementar limites de compra de R$ 50.000 nos dias 05, 10, 15, 20 e 25; R$ 75.000 nos demais dias.
+- [x] Adicionar alerta claro quando os débitos do dia ultrapassarem o limite.
+- [x] Recriar a importação com modelo Excel de exatamente quatro colunas, ignorando Crédito e Saldo.
+- [x] Exibir resumo da importação: lançamentos, período e total de débitos.
+- [x] Recriar o simulador com data de hoje, valor, prazo, data prevista, valor do dia, limite e decisão de compra.
+- [x] Exibir sempre a observação dos dias críticos de pagamento.
+- [x] Validar responsividade, localStorage e formatação brasileira.
+- [ ] Salvar checkpoint da nova versão e entregar ao usuário.
