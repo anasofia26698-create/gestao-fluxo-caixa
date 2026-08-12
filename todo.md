@@ -8,7 +8,7 @@
 - [x] Fazer o simulador considerar a data de referência para informar saldo do dia e possibilidade de compra.
 - [x] Atualizar a importação e o modelo para aceitar arquivos Excel/CSV de forma consistente.
 - [x] Validar cálculos, mensagens de risco e visual responsivo.
-- [ ] Salvar checkpoint da versão revisada e entregar ao usuário.
+- [x] Salvar checkpoint da versão revisada e entregar ao usuário.
 
 ## Revisão: somente débitos
 
@@ -32,3 +32,17 @@
 - [x] Exibir sempre a observação dos dias críticos de pagamento.
 - [x] Validar responsividade, localStorage e formatação brasileira.
 - [ ] Salvar checkpoint da nova versão e entregar ao usuário.
+
+## Revisão: simulador ampliado e lançamentos temporários
+
+- [x] Mover o simulador para a esquerda, aumentá-lo e aumentar a escala tipográfica.
+- [x] Remover o card de lançamentos processados.
+- [x] Exibir débitos por dia abaixo do simulador e das informações principais.
+- [x] Aceitar prazos múltiplos, especialmente 30, 60 e 90 dias.
+- [x] Dividir o valor total da compra pelo número de prazos informados.
+- [x] Calcular, para cada cenário, data prevista, prazo, valor já existente, valor da compra, limite e decisão.
+- [x] Criar gráfico horizontal preenchido com todas as datas e o volume de débitos versus limite disponível.
+- [x] Marcar lançamentos manuais com data de registro e excluir seu efeito após 7 dias.
+- [x] Fazer prevalecer no fluxo os dados importados após a expiração do lançamento manual.
+- [x] Validar layout, cálculos, localStorage e responsividade.
+- [x] Salvar checkpoint da versão revisada e entregar ao usuário.
