@@ -46,3 +46,10 @@
 - [x] Fazer prevalecer no fluxo os dados importados após a expiração do lançamento manual.
 - [x] Validar layout, cálculos, localStorage e responsividade.
 - [x] Salvar checkpoint da versão revisada e entregar ao usuário.
+
+## Correção: estilos duplicados do editor visual
+
+- [x] Inspecionar o erro de recarga do Home.tsx e localizar propriedades JSX duplicadas.
+- [x] Remover estilos inline duplicados sem perder a intenção de aumentar a legibilidade.
+- [x] Validar TypeScript, build e renderização da página.
+- [ ] Salvar checkpoint corrigido.
