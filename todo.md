@@ -136,3 +136,13 @@
 - [x] Exibir cards, tabela consolidada, barras de progresso e alertas de consumo.
 - [x] Validar senha, cálculos, responsividade, compilação e testes.
 - [x] Salvar checkpoint das abas de Metas Compras.
+
+## Limites de compra por dia da semana
+
+- [x] Substituir os limites fixos pela meta de 60% da venda média de cada dia da semana.
+- [x] Aplicar limite máximo de R$ 50.000 nos dias críticos 05, 10, 15, 20 e 25.
+- [x] Atualizar o simulador para usar o limite parametrizado na data prevista de pagamento.
+- [x] Exibir dias críticos e as datas/prazos de pagamento em colunas lado a lado.
+- [x] Aplicar verde para disponibilidade e vermelho para limite ultrapassado nas barras e valores.
+- [x] Criar testes para os limites semanais, exceção crítica e decisão de compra.
+- [x] Validar TypeScript, interface desktop/mobile e salvar checkpoint.

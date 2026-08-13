@@ -1,5 +1,29 @@
 export type PaymentDate = { date: string; raw: string };
 
+export const WEEKDAY_AVERAGE_SALES = [87000, 124000, 124000, 124000, 123000, 127000, 133000] as const;
+export const WEEKDAY_NAMES = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"] as const;
+export const CRITICAL_PAYMENT_DAYS = [5, 10, 15, 20, 25] as const;
+const PURCHASE_RATIO = 0.6;
+
+export function getPurchaseLimitForDate(date: string) {
+  const parsed = new Date(`${date}T12:00:00`);
+  const weekday = parsed.getDay();
+  const averageSales = WEEKDAY_AVERAGE_SALES[weekday];
+  const weekdayLimit = averageSales * PURCHASE_RATIO;
+  const isCritical = CRITICAL_PAYMENT_DAYS.includes(parsed.getDate() as typeof CRITICAL_PAYMENT_DAYS[number]);
+  return {
+    weekday: WEEKDAY_NAMES[weekday],
+    averageSales,
+    weekdayLimit,
+    isCritical,
+    limit: isCritical ? Math.min(50000, weekdayLimit) : weekdayLimit,
+  };
+}
+
+export function canPurchaseOnDate(date: string, existingDebits: number, purchaseValue: number): boolean {
+  return existingDebits + purchaseValue <= getPurchaseLimitForDate(date).limit;
+}
+
 export function parsePaymentDates(value: string): PaymentDate[] {
   return value
     .split(/[;,]+/)
