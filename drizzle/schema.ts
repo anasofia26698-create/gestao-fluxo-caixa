@@ -33,7 +33,17 @@ export const uploadedFiles = mysqlTable("uploadedFiles", {
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
+export const cashFlowEntries = mysqlTable("cashFlowEntries", {
+  id: int("id").autoincrement().primaryKey(),
+  date: varchar("date", { length: 10 }).notNull(),
+  debitCents: int("debitCents").notNull(),
+  source: mysqlEnum("source", ["imported", "manual"]).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 export type UploadedFile = typeof uploadedFiles.$inferSelect;
 export type InsertUploadedFile = typeof uploadedFiles.$inferInsert;
+export type CashFlowEntry = typeof cashFlowEntries.$inferSelect;
+export type InsertCashFlowEntry = typeof cashFlowEntries.$inferInsert;

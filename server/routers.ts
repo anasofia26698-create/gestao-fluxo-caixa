@@ -3,7 +3,7 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
-import { createUploadedFile, listUploadedFiles } from "./db";
+import { createSharedPurchaseConfirmations, createUploadedFile, listSharedCashFlowEntries, listUploadedFiles, replaceSharedImportedEntries } from "./db";
 import { storagePut } from "./storage";
 
 const allowedMimeTypes = new Set([
@@ -52,6 +52,25 @@ export const appRouter = router({
           byteSize: bytes.length,
         });
       }),
+  }),
+  cashFlow: router({
+    list: publicProcedure.query(() => listSharedCashFlowEntries()),
+    replaceImport: publicProcedure
+      .input(z.object({
+        entries: z.array(z.object({
+          date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+          debitCents: z.number().int().positive().max(1_000_000_000),
+        })).min(1).max(50_000),
+      }))
+      .mutation(({ input }) => replaceSharedImportedEntries(input.entries)),
+    confirmPurchases: publicProcedure
+      .input(z.object({
+        entries: z.array(z.object({
+          date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+          debitCents: z.number().int().positive().max(1_000_000_000),
+        })).min(1).max(12),
+      }))
+      .mutation(({ input }) => createSharedPurchaseConfirmations(input.entries)),
   }),
 });
 

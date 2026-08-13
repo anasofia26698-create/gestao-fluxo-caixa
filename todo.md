@@ -146,3 +146,13 @@
 - [x] Aplicar verde para disponibilidade e vermelho para limite ultrapassado nas barras e valores.
 - [x] Criar testes para os limites semanais, exceção crítica e decisão de compra.
 - [x] Validar TypeScript, interface desktop/mobile e salvar checkpoint.
+
+## Sincronização compartilhada do fluxo de caixa
+
+- [x] Criar tabelas compartilhadas para débitos importados e confirmações temporárias de compra.
+- [x] Persistir a importação mais recente como fonte central do fluxo para todos os usuários.
+- [x] Salvar confirmações de compra no servidor e reprocessar o fluxo compartilhado.
+- [x] Expirar confirmações temporárias após sete dias no cálculo central.
+- [x] Atualizar a interface a partir da base central e não do armazenamento local.
+- [x] Criar testes de importação, confirmação, sincronização e expiração.
+- [x] Validar entre sessões e salvar checkpoint da sincronização.

@@ -1,6 +1,6 @@
-import { desc, eq } from "drizzle-orm";
+import { and, asc, eq, lt } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUploadedFile, InsertUser, uploadedFiles, users } from "../drizzle/schema";
+import { cashFlowEntries, InsertCashFlowEntry, InsertUploadedFile, InsertUser, uploadedFiles, users } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -71,5 +71,57 @@ export async function createUploadedFile(file: InsertUploadedFile) {
 export async function listUploadedFiles(ownerId: number) {
   const db = await getDb();
   if (!db) return [];
-  return db.select().from(uploadedFiles).where(eq(uploadedFiles.ownerId, ownerId)).orderBy(desc(uploadedFiles.createdAt));
+  return db.select().from(uploadedFiles).where(eq(uploadedFiles.ownerId, ownerId)).orderBy(asc(uploadedFiles.createdAt));
+}
+
+export const TEMPORARY_PURCHASE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+
+export function getSharedPurchaseExpiration(now = new Date()) {
+  return new Date(now.getTime() - TEMPORARY_PURCHASE_TTL_MS);
+}
+
+export function isSharedPurchaseConfirmationActive(createdAt: Date, now = new Date()) {
+  return createdAt.getTime() >= getSharedPurchaseExpiration(now).getTime();
+}
+
+export type SharedCashFlowInput = {
+  date: string;
+  debitCents: number;
+};
+
+export async function listSharedCashFlowEntries(now = new Date()) {
+  const db = await getDb();
+  if (!db) return [];
+  const expiration = getSharedPurchaseExpiration(now);
+  await db.delete(cashFlowEntries).where(and(eq(cashFlowEntries.source, "manual"), lt(cashFlowEntries.createdAt, expiration)));
+  return db.select().from(cashFlowEntries).orderBy(asc(cashFlowEntries.date), asc(cashFlowEntries.id));
+}
+
+export async function replaceSharedImportedEntries(entries: SharedCashFlowInput[]) {
+  const db = await getDb();
+  if (!db) throw new Error("Database is not available");
+  await db.transaction(async tx => {
+    await tx.delete(cashFlowEntries).where(eq(cashFlowEntries.source, "imported"));
+    if (entries.length) {
+      await tx.insert(cashFlowEntries).values(entries.map(entry => ({
+        date: entry.date,
+        debitCents: entry.debitCents,
+        source: "imported" as const,
+      } satisfies InsertCashFlowEntry)));
+    }
+  });
+  return listSharedCashFlowEntries();
+}
+
+export async function createSharedPurchaseConfirmations(entries: SharedCashFlowInput[]) {
+  const db = await getDb();
+  if (!db) throw new Error("Database is not available");
+  if (entries.length) {
+    await db.insert(cashFlowEntries).values(entries.map(entry => ({
+      date: entry.date,
+      debitCents: entry.debitCents,
+      source: "manual" as const,
+    } satisfies InsertCashFlowEntry)));
+  }
+  return listSharedCashFlowEntries();
 }
