@@ -156,3 +156,19 @@
 - [x] Atualizar a interface a partir da base central e não do armazenamento local.
 - [x] Criar testes de importação, confirmação, sincronização e expiração.
 - [x] Validar entre sessões e salvar checkpoint da sincronização.
+
+## Acesso de convidados e atualização automática
+
+- [ ] Restringir o acesso ao fluxo aos e-mails convidados informados.
+- [ ] Atualizar a consulta do fluxo compartilhado automaticamente a cada cinco minutos enquanto o site estiver aberto.
+- [ ] Avaliar a necessidade de limpeza automática em segundo plano das confirmações expiradas.
+- [ ] Validar acesso autorizado, bloqueio de e-mails não convidados e sincronização entre sessões.
+- [ ] Salvar checkpoint do acesso compartilhado e da atualização automática.
+
+## Acesso público das abas operacionais
+
+- [x] Liberar Fluxo de Caixa para acesso público sem senha.
+- [x] Liberar Importar Planilha para acesso público sem senha.
+- [x] Manter senha obrigatória em Cadastro de Metas e Dashboard de Compras.
+- [x] Validar as quatro abas em uma sessão pública.
+- [x] Salvar checkpoint do acesso público revisado.
