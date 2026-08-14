@@ -159,11 +159,11 @@
 
 ## Acesso de convidados e atualização automática
 
-- [ ] Restringir o acesso ao fluxo aos e-mails convidados informados.
-- [ ] Atualizar a consulta do fluxo compartilhado automaticamente a cada cinco minutos enquanto o site estiver aberto.
-- [ ] Avaliar a necessidade de limpeza automática em segundo plano das confirmações expiradas.
-- [ ] Validar acesso autorizado, bloqueio de e-mails não convidados e sincronização entre sessões.
-- [ ] Salvar checkpoint do acesso compartilhado e da atualização automática.
+- [x] Manter o fluxo público por link, conforme a orientação posterior que substituiu a restrição por e-mails.
+- [x] Atualizar a consulta do fluxo compartilhado automaticamente a cada cinco minutos enquanto o site estiver aberto.
+- [x] Usar a consulta periódica do fluxo para aplicar a limpeza das confirmações expiradas, sem criar uma rotina separada em segundo plano.
+- [x] Validar acesso público às abas operacionais, proteção das abas de metas e sincronização pela fonte central.
+- [x] Salvar checkpoint do acesso compartilhado e da atualização automática.
 
 ## Acesso público das abas operacionais
 

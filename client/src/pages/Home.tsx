@@ -32,7 +32,7 @@ export default function Home() {
   // nonce cookie and must run only at the moment of navigation.
   const { user, loading, error, isAuthenticated, logout } = useAuth();
   const uploadFile = trpc.files.upload.useMutation();
-  const sharedFlow = trpc.cashFlow.list.useQuery(undefined, { refetchInterval: 15_000 });
+  const sharedFlow = trpc.cashFlow.list.useQuery(undefined, { refetchInterval: 300_000, refetchIntervalInBackground: true });
   const replaceSharedImport = trpc.cashFlow.replaceImport.useMutation();
   const confirmSharedPurchase = trpc.cashFlow.confirmPurchases.useMutation();
 
