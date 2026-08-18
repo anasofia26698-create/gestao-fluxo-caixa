@@ -46,12 +46,13 @@ describe("cashFlow shared synchronization", () => {
     vi.mocked(createSharedPurchaseConfirmations).mockResolvedValue([]);
     const caller = appRouter.createCaller(ctx);
 
-    await caller.cashFlow.confirmPurchases({ entries: [{ date: "2026-08-15", debitCents: 1600000 }], actorName: "Comprador teste" });
+    await caller.cashFlow.confirmPurchases({ entries: [{ date: "2026-08-15", debitCents: 1600000, termDays: 30 }], actorName: "Comprador teste" });
 
-    expect(createSharedPurchaseConfirmations).toHaveBeenCalledWith([{ date: "2026-08-15", debitCents: 1600000 }], expect.objectContaining({
+    expect(createSharedPurchaseConfirmations).toHaveBeenCalledWith([{ date: "2026-08-15", debitCents: 1600000, termDays: 30 }], expect.objectContaining({
       eventType: "confirmation",
       userName: "Comprador teste",
       entryCount: 1,
+      details: expect.stringContaining('"totalCents":1600000'),
     }));
   });
 

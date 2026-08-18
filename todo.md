@@ -187,3 +187,10 @@
 - [x] Proteger a aba Auditoria exclusivamente com a senha 2606.
 - [x] Permitir a leitura dos eventos após a senha correta, sem exigir login administrativo.
 - [x] Validar senha incorreta, senha correta, compilação e salvar checkpoint.
+
+## Detalhes de confirmações na Auditoria
+
+- [x] Registrar valor total, quantidade de parcelas, datas previstas e prazos nas novas confirmações.
+- [x] Exibir acessos recentes com IP, horário, usuário e navegador na Auditoria.
+- [x] Exibir nas confirmações o responsável, IP, valor, prazo e parcelas previstas.
+- [x] Validar os dados detalhados, compilação e salvar checkpoint.

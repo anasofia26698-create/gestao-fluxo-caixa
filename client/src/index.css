@@ -118,4 +118,5 @@
 .audit-item strong,.audit-item b { display:block; color:#20262d; font-size:16px; }
 .audit-item span,.audit-item small { display:block; margin-top:4px; color:#6b7280; font-size:14px; overflow-wrap:anywhere; }
 .audit-item small { font-size:12px; }
+.audit-item .audit-confirmation-details { margin-top:8px; padding:9px 10px; color:#18543a; background:#eff9f2; border-left:3px solid #42a76d; border-radius:4px; line-height:1.5; }
 @media (max-width:600px) { .audit-item { grid-template-columns:1fr; gap:7px; } .audit-name-field { margin-inline:16px; } }

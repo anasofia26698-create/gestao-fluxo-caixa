@@ -1,0 +1,1 @@
+ALTER TABLE `auditEvents` ADD `details` text;

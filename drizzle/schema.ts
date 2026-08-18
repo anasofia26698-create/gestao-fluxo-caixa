@@ -52,6 +52,7 @@ export const auditEvents = mysqlTable("auditEvents", {
   userAgent: varchar("userAgent", { length: 1024 }),
   route: varchar("route", { length: 255 }).notNull(),
   entryCount: int("entryCount").default(0).notNull(),
+  details: text("details"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 

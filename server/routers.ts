@@ -20,6 +20,7 @@ function requestAuditMetadata(
   route: string,
   entryCount = 0,
   declaredName?: string,
+  details?: string,
 ) {
   const forwarded = ctx.req.headers["x-forwarded-for"];
   const forwardedValue = Array.isArray(forwarded) ? forwarded[0] : forwarded;
@@ -34,6 +35,7 @@ function requestAuditMetadata(
     userEmail: ctx.user?.email ?? null,
     ipAddress: ipAddress?.slice(0, 64) || null,
     userAgent: (Array.isArray(agent) ? agent[0] : agent)?.slice(0, 1024) || null,
+    details: details || null,
   };
 }
 
@@ -93,10 +95,18 @@ export const appRouter = router({
         entries: z.array(z.object({
           date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
           debitCents: z.number().int().positive().max(1_000_000_000),
+          termDays: z.number().int().min(0).max(3650).optional(),
         })).min(1).max(12),
         actorName: z.string().trim().min(2).max(120).optional(),
       }))
-      .mutation(({ ctx, input }) => createSharedPurchaseConfirmations(input.entries, requestAuditMetadata(ctx, "confirmation", "/fluxo-de-caixa", input.entries.length, input.actorName))),
+      .mutation(({ ctx, input }) => {
+        const totalCents = input.entries.reduce((sum, entry) => sum + entry.debitCents, 0);
+        const details = JSON.stringify({
+          totalCents,
+          installments: input.entries.map(entry => ({ date: entry.date, debitCents: entry.debitCents, termDays: entry.termDays ?? null })),
+        });
+        return createSharedPurchaseConfirmations(input.entries, requestAuditMetadata(ctx, "confirmation", "/fluxo-de-caixa", input.entries.length, input.actorName, details));
+      }),
   }),
   audit: router({
     recent: publicProcedure.input(z.object({ password: z.literal("2606"), limit: z.number().int().min(1).max(200).default(100) })).query(({ input }) => listRecentAuditEvents(input.limit)),

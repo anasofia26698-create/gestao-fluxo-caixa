@@ -87,6 +87,7 @@ export function isSharedPurchaseConfirmationActive(createdAt: Date, now = new Da
 export type SharedCashFlowInput = {
   date: string;
   debitCents: number;
+  termDays?: number;
 };
 
 export type AuditEventInput = {
@@ -98,6 +99,7 @@ export type AuditEventInput = {
   userAgent?: string | null;
   route: string;
   entryCount?: number;
+  details?: string | null;
 };
 
 export async function createAuditEvent(event: AuditEventInput) {
