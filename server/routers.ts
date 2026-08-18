@@ -2,8 +2,8 @@ import { z } from "zod";
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
-import { createSharedPurchaseConfirmations, createUploadedFile, listSharedCashFlowEntries, listUploadedFiles, replaceSharedImportedEntries } from "./db";
+import { adminProcedure, protectedProcedure, publicProcedure, router } from "./_core/trpc";
+import { createAuditEvent, createSharedPurchaseConfirmations, createUploadedFile, listRecentAuditEvents, listSharedCashFlowEntries, listUploadedFiles, replaceSharedImportedEntries } from "./db";
 import { storagePut } from "./storage";
 
 const allowedMimeTypes = new Set([
@@ -13,6 +13,29 @@ const allowedMimeTypes = new Set([
   "application/csv",
   "application/octet-stream",
 ]);
+
+function requestAuditMetadata(
+  ctx: { req: { headers: Record<string, string | string[] | undefined>; socket?: { remoteAddress?: string | undefined } }; user: { id: number; name: string | null; email: string | null } | null },
+  eventType: "access" | "import" | "confirmation",
+  route: string,
+  entryCount = 0,
+  declaredName?: string,
+) {
+  const forwarded = ctx.req.headers["x-forwarded-for"];
+  const forwardedValue = Array.isArray(forwarded) ? forwarded[0] : forwarded;
+  const ipAddress = forwardedValue?.split(",")[0]?.trim() || ctx.req.socket?.remoteAddress || null;
+  const agent = ctx.req.headers["user-agent"];
+  return {
+    eventType,
+    route,
+    entryCount,
+    userId: ctx.user?.id ?? null,
+    userName: ctx.user?.name || declaredName?.trim() || null,
+    userEmail: ctx.user?.email ?? null,
+    ipAddress: ipAddress?.slice(0, 64) || null,
+    userAgent: (Array.isArray(agent) ? agent[0] : agent)?.slice(0, 1024) || null,
+  };
+}
 
 export const appRouter = router({
   system: systemRouter,
@@ -55,22 +78,28 @@ export const appRouter = router({
   }),
   cashFlow: router({
     list: publicProcedure.query(() => listSharedCashFlowEntries()),
+    recordAccess: publicProcedure.mutation(({ ctx }) => createAuditEvent(requestAuditMetadata(ctx, "access", "/"))),
     replaceImport: publicProcedure
       .input(z.object({
         entries: z.array(z.object({
           date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
           debitCents: z.number().int().positive().max(1_000_000_000),
         })).min(1).max(50_000),
+        actorName: z.string().trim().min(2).max(120).optional(),
       }))
-      .mutation(({ input }) => replaceSharedImportedEntries(input.entries)),
+      .mutation(({ ctx, input }) => replaceSharedImportedEntries(input.entries, requestAuditMetadata(ctx, "import", "/importar-planilha", input.entries.length, input.actorName))),
     confirmPurchases: publicProcedure
       .input(z.object({
         entries: z.array(z.object({
           date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
           debitCents: z.number().int().positive().max(1_000_000_000),
         })).min(1).max(12),
+        actorName: z.string().trim().min(2).max(120).optional(),
       }))
-      .mutation(({ input }) => createSharedPurchaseConfirmations(input.entries)),
+      .mutation(({ ctx, input }) => createSharedPurchaseConfirmations(input.entries, requestAuditMetadata(ctx, "confirmation", "/fluxo-de-caixa", input.entries.length, input.actorName))),
+  }),
+  audit: router({
+    recent: adminProcedure.input(z.object({ limit: z.number().int().min(1).max(200).default(100) }).optional()).query(({ input }) => listRecentAuditEvents(input?.limit ?? 100)),
   }),
 });
 

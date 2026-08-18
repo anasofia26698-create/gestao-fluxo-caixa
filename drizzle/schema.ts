@@ -38,6 +38,20 @@ export const cashFlowEntries = mysqlTable("cashFlowEntries", {
   date: varchar("date", { length: 10 }).notNull(),
   debitCents: int("debitCents").notNull(),
   source: mysqlEnum("source", ["imported", "manual"]).notNull(),
+  auditEventId: int("auditEventId").references(() => auditEvents.id),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export const auditEvents = mysqlTable("auditEvents", {
+  id: int("id").autoincrement().primaryKey(),
+  eventType: mysqlEnum("eventType", ["access", "import", "confirmation"]).notNull(),
+  userId: int("userId").references(() => users.id),
+  userName: varchar("userName", { length: 255 }),
+  userEmail: varchar("userEmail", { length: 320 }),
+  ipAddress: varchar("ipAddress", { length: 64 }),
+  userAgent: varchar("userAgent", { length: 1024 }),
+  route: varchar("route", { length: 255 }).notNull(),
+  entryCount: int("entryCount").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
@@ -47,3 +61,5 @@ export type UploadedFile = typeof uploadedFiles.$inferSelect;
 export type InsertUploadedFile = typeof uploadedFiles.$inferInsert;
 export type CashFlowEntry = typeof cashFlowEntries.$inferSelect;
 export type InsertCashFlowEntry = typeof cashFlowEntries.$inferInsert;
+export type AuditEvent = typeof auditEvents.$inferSelect;
+export type InsertAuditEvent = typeof auditEvents.$inferInsert;

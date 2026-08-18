@@ -1,9 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
-import { createSharedPurchaseConfirmations, listSharedCashFlowEntries, replaceSharedImportedEntries } from "./db";
+import { createAuditEvent, createSharedPurchaseConfirmations, listSharedCashFlowEntries, replaceSharedImportedEntries } from "./db";
 
 vi.mock("./db", () => ({
+  createAuditEvent: vi.fn(),
   createSharedPurchaseConfirmations: vi.fn(),
   createUploadedFile: vi.fn(),
   listSharedCashFlowEntries: vi.fn(),
@@ -12,7 +13,7 @@ vi.mock("./db", () => ({
 }));
 
 describe("cashFlow shared synchronization", () => {
-  const ctx = {} as TrpcContext;
+  const ctx = { user: null, req: { headers: {}, socket: {} } } as TrpcContext;
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -33,15 +34,37 @@ describe("cashFlow shared synchronization", () => {
 
     await caller.cashFlow.replaceImport({ entries: [{ date: "2026-08-14", debitCents: 7620000 }] });
 
-    expect(replaceSharedImportedEntries).toHaveBeenCalledWith([{ date: "2026-08-14", debitCents: 7620000 }]);
+    expect(replaceSharedImportedEntries).toHaveBeenCalledWith([{ date: "2026-08-14", debitCents: 7620000 }], expect.objectContaining({
+      eventType: "import",
+      entryCount: 1,
+      route: "/importar-planilha",
+    }));
   });
 
   it("records purchase confirmations centrally for other machines to read", async () => {
     vi.mocked(createSharedPurchaseConfirmations).mockResolvedValue([]);
     const caller = appRouter.createCaller(ctx);
 
-    await caller.cashFlow.confirmPurchases({ entries: [{ date: "2026-08-15", debitCents: 1600000 }] });
+    await caller.cashFlow.confirmPurchases({ entries: [{ date: "2026-08-15", debitCents: 1600000 }], actorName: "Comprador teste" });
 
-    expect(createSharedPurchaseConfirmations).toHaveBeenCalledWith([{ date: "2026-08-15", debitCents: 1600000 }]);
+    expect(createSharedPurchaseConfirmations).toHaveBeenCalledWith([{ date: "2026-08-15", debitCents: 1600000 }], expect.objectContaining({
+      eventType: "confirmation",
+      userName: "Comprador teste",
+      entryCount: 1,
+    }));
+  });
+
+  it("records a public access event with request metadata", async () => {
+    vi.mocked(createAuditEvent).mockResolvedValue({ id: 1 } as never);
+    const caller = appRouter.createCaller(ctx);
+
+    await caller.cashFlow.recordAccess();
+
+    expect(createAuditEvent).toHaveBeenCalledWith(expect.objectContaining({ eventType: "access", route: "/" }));
+  });
+
+  it("does not allow a public session to read the audit trail", async () => {
+    const caller = appRouter.createCaller(ctx);
+    await expect(caller.audit.recent()).rejects.toThrow("required permission");
   });
 });

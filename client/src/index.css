@@ -109,3 +109,13 @@
 
 /* Meta de compra por dia da semana e datas críticas. */
 .critical-item { display:grid; grid-template-columns:1fr 1fr auto; align-items:center; gap:18px; } .critical-item > div:first-child,.critical-item > div:last-child { display:grid; } .critical-event,.critical-date,.critical-amount { gap:4px; } .critical-event strong,.critical-date strong { color:#20262d; font-size:17px; } .critical-event span,.critical-date span,.critical-amount small { color:#6b7280; font-size:14px; } .critical-amount { text-align:right; } .critical-amount b { font-size:20px; } .timeline-fill { background:#42a76d; } .timeline-fill.fill-risk { background:#cf5b51; } .timeline-value strong.green-text { color:#177245!important; } .timeline-value strong.red-text { color:#b42318!important; } @media (max-width:600px) { .critical-item { grid-template-columns:1fr; gap:8px; } .critical-amount { text-align:left; } }
+
+/* Auditoria de acessos e ações futuras do fluxo. */
+.audit-name-field { display:grid; gap:7px; margin:0 20px 14px; color:#515b68; font-size:15px; font-weight:600; }
+.audit-list { display:grid; padding:0 20px 8px; }
+.audit-item { display:grid; grid-template-columns:minmax(180px,.9fr) minmax(280px,1.3fr); gap:20px; padding:16px 0; border-bottom:1px solid #edf0f2; }
+.audit-item:last-child { border-bottom:0; }
+.audit-item strong,.audit-item b { display:block; color:#20262d; font-size:16px; }
+.audit-item span,.audit-item small { display:block; margin-top:4px; color:#6b7280; font-size:14px; overflow-wrap:anywhere; }
+.audit-item small { font-size:12px; }
+@media (max-width:600px) { .audit-item { grid-template-columns:1fr; gap:7px; } .audit-name-field { margin-inline:16px; } }

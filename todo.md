@@ -172,3 +172,12 @@
 - [x] Manter senha obrigatória em Cadastro de Metas e Dashboard de Compras.
 - [x] Validar as quatro abas em uma sessão pública.
 - [x] Salvar checkpoint do acesso público revisado.
+
+## Auditoria de acessos e confirmações
+
+- [x] Criar registros de auditoria para acessos, importações e confirmações de compra futuras.
+- [x] Armazenar usuário autenticado quando houver, data/hora, IP encaminhado e identificação limitada do navegador.
+- [x] Associar confirmações de compra futuras ao responsável e ao evento de auditoria.
+- [x] Mostrar o histórico de auditoria em área protegida por autenticação administrativa.
+- [x] Criar testes para registro de auditoria e autoria das confirmações.
+- [x] Validar a coleta e salvar checkpoint da trilha de auditoria.

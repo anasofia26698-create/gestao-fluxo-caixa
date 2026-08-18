@@ -1,6 +1,6 @@
-import { and, asc, eq, lt } from "drizzle-orm";
+import { and, asc, desc, eq, lt } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { cashFlowEntries, InsertCashFlowEntry, InsertUploadedFile, InsertUser, uploadedFiles, users } from "../drizzle/schema";
+import { auditEvents, cashFlowEntries, InsertCashFlowEntry, InsertUploadedFile, InsertUser, uploadedFiles, users } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -89,6 +89,35 @@ export type SharedCashFlowInput = {
   debitCents: number;
 };
 
+export type AuditEventInput = {
+  eventType: "access" | "import" | "confirmation";
+  userId?: number | null;
+  userName?: string | null;
+  userEmail?: string | null;
+  ipAddress?: string | null;
+  userAgent?: string | null;
+  route: string;
+  entryCount?: number;
+};
+
+export async function createAuditEvent(event: AuditEventInput) {
+  const db = await getDb();
+  if (!db) throw new Error("Database is not available");
+  const result = await db.insert(auditEvents).values({
+    ...event,
+    entryCount: event.entryCount ?? 0,
+  });
+  const id = Number(result[0].insertId);
+  const rows = await db.select().from(auditEvents).where(eq(auditEvents.id, id)).limit(1);
+  return rows[0];
+}
+
+export async function listRecentAuditEvents(limit = 100) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(auditEvents).orderBy(desc(auditEvents.createdAt), desc(auditEvents.id)).limit(limit);
+}
+
 export async function listSharedCashFlowEntries(now = new Date()) {
   const db = await getDb();
   if (!db) return [];
@@ -97,31 +126,45 @@ export async function listSharedCashFlowEntries(now = new Date()) {
   return db.select().from(cashFlowEntries).orderBy(asc(cashFlowEntries.date), asc(cashFlowEntries.id));
 }
 
-export async function replaceSharedImportedEntries(entries: SharedCashFlowInput[]) {
+export async function replaceSharedImportedEntries(entries: SharedCashFlowInput[], audit?: AuditEventInput) {
   const db = await getDb();
   if (!db) throw new Error("Database is not available");
   await db.transaction(async tx => {
+    let auditEventId: number | undefined;
+    if (audit) {
+      const result = await tx.insert(auditEvents).values({ ...audit, entryCount: audit.entryCount ?? entries.length });
+      auditEventId = Number(result[0].insertId);
+    }
     await tx.delete(cashFlowEntries).where(eq(cashFlowEntries.source, "imported"));
     if (entries.length) {
       await tx.insert(cashFlowEntries).values(entries.map(entry => ({
         date: entry.date,
         debitCents: entry.debitCents,
         source: "imported" as const,
+        auditEventId,
       } satisfies InsertCashFlowEntry)));
     }
   });
   return listSharedCashFlowEntries();
 }
 
-export async function createSharedPurchaseConfirmations(entries: SharedCashFlowInput[]) {
+export async function createSharedPurchaseConfirmations(entries: SharedCashFlowInput[], audit?: AuditEventInput) {
   const db = await getDb();
   if (!db) throw new Error("Database is not available");
   if (entries.length) {
-    await db.insert(cashFlowEntries).values(entries.map(entry => ({
-      date: entry.date,
-      debitCents: entry.debitCents,
-      source: "manual" as const,
-    } satisfies InsertCashFlowEntry)));
+    await db.transaction(async tx => {
+      let auditEventId: number | undefined;
+      if (audit) {
+        const result = await tx.insert(auditEvents).values({ ...audit, entryCount: audit.entryCount ?? entries.length });
+        auditEventId = Number(result[0].insertId);
+      }
+      await tx.insert(cashFlowEntries).values(entries.map(entry => ({
+        date: entry.date,
+        debitCents: entry.debitCents,
+        source: "manual" as const,
+        auditEventId,
+      } satisfies InsertCashFlowEntry)));
+    });
   }
   return listSharedCashFlowEntries();
 }
