@@ -2,7 +2,7 @@ import { z } from "zod";
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { adminProcedure, protectedProcedure, publicProcedure, router } from "./_core/trpc";
+import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import { createAuditEvent, createSharedPurchaseConfirmations, createUploadedFile, listRecentAuditEvents, listSharedCashFlowEntries, listUploadedFiles, replaceSharedImportedEntries } from "./db";
 import { storagePut } from "./storage";
 
@@ -99,7 +99,7 @@ export const appRouter = router({
       .mutation(({ ctx, input }) => createSharedPurchaseConfirmations(input.entries, requestAuditMetadata(ctx, "confirmation", "/fluxo-de-caixa", input.entries.length, input.actorName))),
   }),
   audit: router({
-    recent: adminProcedure.input(z.object({ limit: z.number().int().min(1).max(200).default(100) }).optional()).query(({ input }) => listRecentAuditEvents(input?.limit ?? 100)),
+    recent: publicProcedure.input(z.object({ password: z.literal("2606"), limit: z.number().int().min(1).max(200).default(100) })).query(({ input }) => listRecentAuditEvents(input.limit)),
   }),
 });
 

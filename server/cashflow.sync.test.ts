@@ -1,13 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
-import { createAuditEvent, createSharedPurchaseConfirmations, listSharedCashFlowEntries, replaceSharedImportedEntries } from "./db";
+import { createAuditEvent, createSharedPurchaseConfirmations, listRecentAuditEvents, listSharedCashFlowEntries, replaceSharedImportedEntries } from "./db";
 
 vi.mock("./db", () => ({
   createAuditEvent: vi.fn(),
   createSharedPurchaseConfirmations: vi.fn(),
   createUploadedFile: vi.fn(),
   listSharedCashFlowEntries: vi.fn(),
+  listRecentAuditEvents: vi.fn(),
   listUploadedFiles: vi.fn(),
   replaceSharedImportedEntries: vi.fn(),
 }));
@@ -63,8 +64,11 @@ describe("cashFlow shared synchronization", () => {
     expect(createAuditEvent).toHaveBeenCalledWith(expect.objectContaining({ eventType: "access", route: "/" }));
   });
 
-  it("does not allow a public session to read the audit trail", async () => {
+  it("requires the configured password before returning the audit trail", async () => {
     const caller = appRouter.createCaller(ctx);
-    await expect(caller.audit.recent()).rejects.toThrow("required permission");
+    await expect(caller.audit.recent({ password: "0000" as "2606" })).rejects.toThrow();
+
+    vi.mocked(listRecentAuditEvents).mockResolvedValue([]);
+    await expect(caller.audit.recent({ password: "2606" })).resolves.toEqual([]);
   });
 });

@@ -181,3 +181,9 @@
 - [x] Mostrar o histórico de auditoria em área protegida por autenticação administrativa.
 - [x] Criar testes para registro de auditoria e autoria das confirmações.
 - [x] Validar a coleta e salvar checkpoint da trilha de auditoria.
+
+## Senha da auditoria
+
+- [x] Proteger a aba Auditoria exclusivamente com a senha 2606.
+- [x] Permitir a leitura dos eventos após a senha correta, sem exigir login administrativo.
+- [x] Validar senha incorreta, senha correta, compilação e salvar checkpoint.
