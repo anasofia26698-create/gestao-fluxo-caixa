@@ -194,3 +194,14 @@
 - [x] Exibir acessos recentes com IP, horário, usuário e navegador na Auditoria.
 - [x] Exibir nas confirmações o responsável, IP, valor, prazo e parcelas previstas.
 - [x] Validar os dados detalhados, compilação e salvar checkpoint.
+
+## Auditoria ampliada sem perda de histórico
+
+- [x] Preservar a aba Auditoria, a senha 2606 e todos os eventos atuais.
+- [x] Registrar eventos de acesso, importação, confirmação, simulação e alterações futuras como histórico imutável.
+- [x] Registrar resultado da simulação, valor, prazos, datas previstas e meta usada.
+- [x] Guardar metadados da importação: arquivo, colunas mapeadas, período, quantidade e total de débitos.
+- [x] Manter histórico das últimas cinco importações para comparação.
+- [x] Destacar o maior aumento de débitos por data entre a importação atual e o histórico recente.
+- [x] Exibir os novos detalhes na Auditoria protegida sem remover as informações atuais.
+- [x] Validar persistência, cálculos, responsividade e salvar checkpoint.

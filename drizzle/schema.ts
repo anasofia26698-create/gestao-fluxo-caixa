@@ -44,7 +44,7 @@ export const cashFlowEntries = mysqlTable("cashFlowEntries", {
 
 export const auditEvents = mysqlTable("auditEvents", {
   id: int("id").autoincrement().primaryKey(),
-  eventType: mysqlEnum("eventType", ["access", "import", "confirmation"]).notNull(),
+  eventType: mysqlEnum("eventType", ["access", "import", "confirmation", "simulation"]).notNull(),
   userId: int("userId").references(() => users.id),
   userName: varchar("userName", { length: 255 }),
   userEmail: varchar("userEmail", { length: 320 }),
@@ -56,6 +56,25 @@ export const auditEvents = mysqlTable("auditEvents", {
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
+export const cashFlowImportRuns = mysqlTable("cashFlowImportRuns", {
+  id: int("id").autoincrement().primaryKey(),
+  auditEventId: int("auditEventId").references(() => auditEvents.id),
+  fileName: varchar("fileName", { length: 255 }),
+  mappedColumns: text("mappedColumns").notNull(),
+  entryCount: int("entryCount").notNull(),
+  periodStart: varchar("periodStart", { length: 10 }).notNull(),
+  periodEnd: varchar("periodEnd", { length: 10 }).notNull(),
+  totalDebitCents: int("totalDebitCents").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export const cashFlowImportEntries = mysqlTable("cashFlowImportEntries", {
+  id: int("id").autoincrement().primaryKey(),
+  importRunId: int("importRunId").notNull().references(() => cashFlowImportRuns.id),
+  date: varchar("date", { length: 10 }).notNull(),
+  debitCents: int("debitCents").notNull(),
+});
+
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 export type UploadedFile = typeof uploadedFiles.$inferSelect;
@@ -64,3 +83,7 @@ export type CashFlowEntry = typeof cashFlowEntries.$inferSelect;
 export type InsertCashFlowEntry = typeof cashFlowEntries.$inferInsert;
 export type AuditEvent = typeof auditEvents.$inferSelect;
 export type InsertAuditEvent = typeof auditEvents.$inferInsert;
+export type CashFlowImportRun = typeof cashFlowImportRuns.$inferSelect;
+export type InsertCashFlowImportRun = typeof cashFlowImportRuns.$inferInsert;
+export type CashFlowImportEntry = typeof cashFlowImportEntries.$inferSelect;
+export type InsertCashFlowImportEntry = typeof cashFlowImportEntries.$inferInsert;

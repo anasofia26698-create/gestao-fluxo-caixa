@@ -120,3 +120,20 @@
 .audit-item small { font-size:12px; }
 .audit-item .audit-confirmation-details { margin-top:8px; padding:9px 10px; color:#18543a; background:#eff9f2; border-left:3px solid #42a76d; border-radius:4px; line-height:1.5; }
 @media (max-width:600px) { .audit-item { grid-template-columns:1fr; gap:7px; } .audit-name-field { margin-inline:16px; } }
+
+/* Histórico e comparação das importações na Auditoria. */
+.import-comparison-card { margin-top:16px; }
+.comparison-content { display:grid; grid-template-columns:minmax(0,1fr) minmax(260px,.85fr); gap:24px; padding:18px 20px 22px; }
+.import-run-list { display:grid; gap:0; }
+.import-run { display:grid; gap:4px; padding:12px 0; border-bottom:1px solid #edf0f2; }
+.import-run:last-child { border-bottom:0; }
+.import-run strong { color:#20262d; font-size:16px; }
+.import-run span,.import-run small { color:#6b7280; font-size:14px; }
+.increase-list { padding:14px; border:1px solid #e5ede8; border-radius:8px; background:#f7fbf8; }
+.increase-list h3 { margin:0 0 8px; color:#20262d; font-size:16px; }
+.increase-row { display:grid; grid-template-columns:1fr auto; gap:3px 12px; padding:11px 0; border-bottom:1px solid #dceae0; }
+.increase-row:last-child { border-bottom:0; }
+.increase-row span { color:#4b5563; font-size:14px; }
+.increase-row b { color:#b42318; font-size:16px; }
+.increase-row small { grid-column:1 / -1; color:#6b7280; font-size:13px; }
+@media (max-width:700px) { .comparison-content { grid-template-columns:1fr; gap:14px; } }

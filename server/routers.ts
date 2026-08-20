@@ -3,7 +3,7 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
-import { createAuditEvent, createSharedPurchaseConfirmations, createUploadedFile, listRecentAuditEvents, listSharedCashFlowEntries, listUploadedFiles, replaceSharedImportedEntries } from "./db";
+import { createAuditEvent, createSharedPurchaseConfirmations, createUploadedFile, getRecentImportComparison, listRecentAuditEvents, listSharedCashFlowEntries, listUploadedFiles, replaceSharedImportedEntries } from "./db";
 import { storagePut } from "./storage";
 
 const allowedMimeTypes = new Set([
@@ -16,7 +16,7 @@ const allowedMimeTypes = new Set([
 
 function requestAuditMetadata(
   ctx: { req: { headers: Record<string, string | string[] | undefined>; socket?: { remoteAddress?: string | undefined } }; user: { id: number; name: string | null; email: string | null } | null },
-  eventType: "access" | "import" | "confirmation",
+  eventType: "access" | "import" | "confirmation" | "simulation",
   route: string,
   entryCount = 0,
   declaredName?: string,
@@ -88,8 +88,19 @@ export const appRouter = router({
           debitCents: z.number().int().positive().max(1_000_000_000),
         })).min(1).max(50_000),
         actorName: z.string().trim().min(2).max(120).optional(),
+        importMeta: z.object({
+          fileName: z.string().min(1).max(255).optional(),
+          mappedColumns: z.object({ operationDate: z.string(), credit: z.string(), debit: z.string(), balance: z.string() }),
+          periodStart: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+          periodEnd: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+          totalDebitCents: z.number().int().positive(),
+        }).optional(),
       }))
-      .mutation(({ ctx, input }) => replaceSharedImportedEntries(input.entries, requestAuditMetadata(ctx, "import", "/importar-planilha", input.entries.length, input.actorName))),
+      .mutation(({ ctx, input }) => {
+        const meta = input.importMeta;
+        const details = meta ? JSON.stringify({ fileName: meta.fileName ?? null, mappedColumns: meta.mappedColumns, periodStart: meta.periodStart, periodEnd: meta.periodEnd, totalDebitCents: meta.totalDebitCents }) : undefined;
+        return replaceSharedImportedEntries(input.entries, requestAuditMetadata(ctx, "import", "/importar-planilha", input.entries.length, input.actorName, details), meta ? { ...meta, mappedColumns: JSON.stringify(meta.mappedColumns) } : undefined);
+      }),
     confirmPurchases: publicProcedure
       .input(z.object({
         entries: z.array(z.object({
@@ -107,9 +118,24 @@ export const appRouter = router({
         });
         return createSharedPurchaseConfirmations(input.entries, requestAuditMetadata(ctx, "confirmation", "/fluxo-de-caixa", input.entries.length, input.actorName, details));
       }),
+    recordSimulation: publicProcedure
+      .input(z.object({
+        referenceDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+        purchaseCents: z.number().int().positive(),
+        scenarios: z.array(z.object({
+          termDays: z.number().int().min(0).max(3650),
+          paymentDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+          existingDebitCents: z.number().int().min(0),
+          installmentCents: z.number().int().positive(),
+          limitCents: z.number().int().positive(),
+          canBuy: z.boolean(),
+        })).min(1).max(12),
+      }))
+      .mutation(({ ctx, input }) => createAuditEvent(requestAuditMetadata(ctx, "simulation", "/fluxo-de-caixa", input.scenarios.length, undefined, JSON.stringify(input)))),
   }),
   audit: router({
     recent: publicProcedure.input(z.object({ password: z.literal("2606"), limit: z.number().int().min(1).max(200).default(100) })).query(({ input }) => listRecentAuditEvents(input.limit)),
+    importComparison: publicProcedure.input(z.object({ password: z.literal("2606") })).query(() => getRecentImportComparison()),
   }),
 });
 
