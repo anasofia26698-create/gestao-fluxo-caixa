@@ -1,1 +1,1 @@
-{"buildCommand":"pnpm install && npx vite build","outputDirectory":"dist/public","framework":"vite","rewrites":[{"source":"/(.*)","destination":"/index.html"}]}
+{"buildCommand":"pnpm install && pnpm vite build","outputDirectory":"dist/public","framework":"vite","rewrites":[{"source":"/(.*)","destination":"/index.html"}]}
