@@ -1,0 +1,14 @@
+   {
+     "version": 2,
+     "buildCommand": "pnpm install --frozen-lockfile && pnpm build",
+     "outputDirectory": "dist/public",
+     "framework": "vite",
+     "rewrites": [
+       { "source": "/api/(.*)", "destination": "/api/$1" }
+     ],
+     "functions": {
+       "api/**/*.ts": {
+         "runtime": "@vercel/node@5"
+       }
+     }
+   }
